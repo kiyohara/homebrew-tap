@@ -21,4 +21,12 @@ cask "slapex" do
   livecheck do
     skip "Auto-generated on release."
   end
+
+  postflight do
+    if OS.mac?
+      Dir["#{staged_path}/slapex_darwin_*"].each do |binary|
+        system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", binary]
+      end
+    end
+  end
 end
